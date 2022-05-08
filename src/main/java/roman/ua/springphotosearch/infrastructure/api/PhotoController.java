@@ -7,7 +7,6 @@ import roman.ua.springphotosearch.app.PhotoService;
 import roman.ua.springphotosearch.domain.Photo;
 
 import java.io.IOException;
-import java.util.Collection;
 
 @RestController
 public class PhotoController {
@@ -20,20 +19,20 @@ public class PhotoController {
     }
 
     @GetMapping("/photosList")
-    public Collection<Photo> getPhotos() {
+    public Iterable<Photo> getPhotos() {
         return photoService
             .getPhotoList();
     }
 
     @GetMapping("/photosList/{id}")
-    public Photo getPhotoById(@PathVariable String id) {
+    public Photo getPhotoById(@PathVariable Integer id) {
         return photoService
             .getPhotoById(id);
     }
 
 
     @DeleteMapping("/photos/{id}")
-    public void deletePhoto(@PathVariable String id) {
+    public void deletePhoto(@PathVariable Integer id) {
         photoService
             .removePhoto(id);
     }
@@ -43,7 +42,7 @@ public class PhotoController {
     public Photo createPhoto(@RequestPart("data") MultipartFile file) throws IOException {
         return photoService
             .savePhoto(
-            file.getName(),
+            file.getOriginalFilename(),
             file.getContentType(),
             file.getBytes());
     }

@@ -1,41 +1,24 @@
 package roman.ua.springphotosearch.infrastructure.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-import roman.ua.springphotosearch.app.PhotoService;
-import roman.ua.springphotosearch.domain.Photo;
+import roman.ua.springphotosearch.app.DownloadService;
 
 @RestController
 public class DownloadController {
-    PhotoService photoService;
+
+    DownloadService downloadService;
 
     @Autowired
-    public DownloadController(PhotoService photoService) {
-        this.photoService = photoService;
+    public DownloadController(DownloadService downloadService) {
+        this.downloadService = downloadService;
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> download(@PathVariable String id) {
-        Photo photo = photoService.getPhotoById(id);
-        if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        byte[] data = photo.getData();
-
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setContentType(MediaType.valueOf(photo.getContentType()));
-
-        ContentDisposition build = ContentDisposition
-            .builder("attachment")
-            .filename(photo.getFileName())
-            .build();
-
-        headers.setContentDisposition(build);
-
-        return new ResponseEntity<>(data, headers, HttpStatus.OK);
+    public ResponseEntity<byte[]> download(@PathVariable Integer id) {
+        return downloadService.download(id);
     }
 }
