@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import roman.ua.springphotosearch.app.PhotoService;
+import roman.ua.springphotosearch.domain.NotAllowedContentTypeException;
 import roman.ua.springphotosearch.domain.Photo;
 
 import java.io.IOException;
@@ -39,7 +40,9 @@ public class PhotoController {
 
 
     @PostMapping("/photosList")
-    public Photo createPhoto(@RequestPart("data") MultipartFile file) throws IOException {
+    public Photo createPhoto(@RequestPart("data") MultipartFile file) throws IOException
+                                                                    , NotAllowedContentTypeException {
+
         return photoService
             .savePhoto(
             file.getOriginalFilename(),
