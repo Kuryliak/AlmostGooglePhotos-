@@ -1,8 +1,14 @@
 package roman.ua.springphotosearch.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import roman.ua.springphotosearch.domain.Photo;
+
+import java.util.Collection;
+
+import static java.util.List.of;
 
 @Service
 public class PhotoService {
@@ -26,17 +32,25 @@ public class PhotoService {
 
     }
 
-    public Photo savePhoto(String fileName,
-                           String contentType,
-                           byte[] data) {
-        Photo photo = new Photo();
+    public Photo savePhoto(
+            String fileName,
+            String contentType,
+            byte[] data) {
 
-        photo.setFileName(fileName);
-        photo.setContentType(contentType);
-        photo.setData(data);
+        Photo photoToDb = new Photo();
 
-        photosRepository.save(photo);
+        photoToDb.setFileName(fileName);
+        photoToDb.setContentType(contentType);
+        photoToDb.setData(data);
 
-        return photo;
+
+        if (!ALLOWED_CONTENT_TYPE.contains(contentType)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Uploaded content should be an image!");
+        }
+        return photoToDb;
     }
+
+    public static Collection<String> ALLOWED_CONTENT_TYPE = of("image/png", "image/jpeg");
 }

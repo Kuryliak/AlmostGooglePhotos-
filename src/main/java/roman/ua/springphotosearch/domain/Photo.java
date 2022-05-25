@@ -1,6 +1,5 @@
 package roman.ua.springphotosearch.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -12,7 +11,6 @@ public class Photo {
     private String fileName;
     private String contentType;
 
-    @JsonIgnore
     private byte[] data;
 
     public byte[] getData() {

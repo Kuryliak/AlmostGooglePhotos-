@@ -10,7 +10,7 @@ import roman.ua.springphotosearch.app.DownloadService;
 @RestController
 public class DownloadController {
 
-    DownloadService downloadService;
+    private DownloadService downloadService;
 
     @Autowired
     public DownloadController(DownloadService downloadService) {

@@ -21,29 +21,36 @@ public class PhotoController {
     @GetMapping("/photosList")
     public Iterable<Photo> getPhotos() {
         return photoService
-            .getPhotoList();
+                .getPhotoList();
     }
 
     @GetMapping("/photosList/{id}")
     public Photo getPhotoById(@PathVariable Integer id) {
         return photoService
-            .getPhotoById(id);
+                .getPhotoById(id);
     }
 
 
     @DeleteMapping("/photos/{id}")
     public void deletePhoto(@PathVariable Integer id) {
         photoService
-            .removePhoto(id);
+                .removePhoto(id);
     }
 
 
     @PostMapping("/photosList")
-    public Photo createPhoto(@RequestPart("data") MultipartFile file) throws IOException {
-        return photoService
-            .savePhoto(
-            file.getOriginalFilename(),
-            file.getContentType(),
-            file.getBytes());
+    public Photo createPhoto(@RequestPart("data") MultipartFile file)
+            throws IOException {
+
+        Photo photoModel = new Photo();
+        photoModel.setFileName(file.getOriginalFilename());
+        photoModel.setContentType(file.getContentType());
+        photoModel.setData(file.getBytes());
+
+
+        return photoService.savePhoto(photoModel.getFileName(),
+                photoModel.getContentType(),
+                photoModel.getData());
+
     }
 }
