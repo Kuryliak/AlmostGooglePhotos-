@@ -25,7 +25,9 @@ public class DownloadService {
 
         HttpHeaders headers = new HttpHeaders();
 
-        headers.setContentType(MediaType.valueOf(photo.getContentType()));
+        headers.setContentType(MediaType.valueOf(
+                                                  photo.
+                                                  getContentType()));
 
         ContentDisposition build = ContentDisposition
                 .builder("attachment")

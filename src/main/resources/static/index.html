@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gallery</title>
+</head>
+<body>
+<script>
+    async function load_pic() {
+
+        const url = '/photosList';
+
+        const options = {
+            method: "GET"
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.status === 200) {
+
+            const imageBlob = await response.blob();
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+
+            const image = document.createElement('img');
+            image.src = imageObjectURL;
+
+            const container = document.getElementById("data");
+            console.log(image);
+        } else {
+            console.log("HTTP-Error: " + response.status);
+        }
+    }
+
+    load_pic();
+</script>
+</body>
+<div id="data">
+
+</div>
+</html>

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import roman.ua.springphotosearch.app.PhotoService;
-import roman.ua.springphotosearch.domain.NotAllowedContentTypeException;
 import roman.ua.springphotosearch.domain.Photo;
 
 import java.io.IOException;
@@ -22,31 +21,36 @@ public class PhotoController {
     @GetMapping("/photosList")
     public Iterable<Photo> getPhotos() {
         return photoService
-            .getPhotoList();
+                .getPhotoList();
     }
 
     @GetMapping("/photosList/{id}")
     public Photo getPhotoById(@PathVariable Integer id) {
         return photoService
-            .getPhotoById(id);
+                .getPhotoById(id);
     }
 
 
     @DeleteMapping("/photos/{id}")
     public void deletePhoto(@PathVariable Integer id) {
         photoService
-            .removePhoto(id);
+                .removePhoto(id);
     }
 
 
     @PostMapping("/photosList")
-    public Photo createPhoto(@RequestPart("data") MultipartFile file) throws IOException
-                                                                    , NotAllowedContentTypeException {
+    public Photo createPhoto(@RequestPart("data") MultipartFile file)
+            throws IOException {
 
-        return photoService
-            .savePhoto(
-            file.getOriginalFilename(),
-            file.getContentType(),
-            file.getBytes());
+        Photo photoModel = new Photo();
+        photoModel.setFileName(file.getOriginalFilename());
+        photoModel.setContentType(file.getContentType());
+        photoModel.setData(file.getBytes());
+
+
+        return photoService.savePhoto(photoModel.getFileName(),
+                photoModel.getContentType(),
+                photoModel.getData());
+
     }
 }

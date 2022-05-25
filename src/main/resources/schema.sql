@@ -4,3 +4,7 @@ create table if not exists photos(
     content_type varchar(255),
     data binary
 );
+
+create table if not exists authors(
+      author varchar(255),
+ );
